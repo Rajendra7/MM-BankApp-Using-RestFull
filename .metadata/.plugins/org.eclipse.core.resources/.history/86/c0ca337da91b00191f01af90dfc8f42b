@@ -1,0 +1,14 @@
+package com.moneymoneybank.app.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.moneymoneybank.app.entity.Account;
+
+public interface AccountsService {
+
+	List<Account> getallAccounts();
+
+	Optional<Account> getAccountById(int accountNumber);
+
+}

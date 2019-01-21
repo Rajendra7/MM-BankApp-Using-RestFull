@@ -1,0 +1,5 @@
+package com.moneymoneybank.app.entity;
+
+public interface TransactionType {
+
+}

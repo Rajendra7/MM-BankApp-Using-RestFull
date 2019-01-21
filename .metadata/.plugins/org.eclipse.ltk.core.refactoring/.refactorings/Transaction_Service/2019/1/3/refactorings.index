@@ -1,0 +1,9 @@
+1547780353974	Rename package 'com.moneymoneybank.web.Transaction_Service'
+1547781505486	Extract interface 'TransactionService'
+1547781665362	Delete element
+1547781677140	Rename package 'com.moneymoneybank.web'
+1547781692971	Rename package 'com.moneymoneybank.web.repo'
+1547781706338	Rename package 'com.moneymoneybank.web.resource'
+1547781720330	Rename package 'com.moneymoneybank.web.service'
+1547803230556	Delete element
+1547803260720	Extract interface 'TransactionService'
