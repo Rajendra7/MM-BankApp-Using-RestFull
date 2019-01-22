@@ -1,5 +1,0 @@
-package com.moneymoneybank.web.service;
-
-public interface TransactionService {
-
-}

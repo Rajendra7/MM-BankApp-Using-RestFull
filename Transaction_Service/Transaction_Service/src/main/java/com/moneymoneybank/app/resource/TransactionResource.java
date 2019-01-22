@@ -1,8 +1,11 @@
 package com.moneymoneybank.app.resource;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +28,36 @@ public class TransactionResource {
 	@Autowired
 	private TransactionService service;
 	
-	@PostMapping
-	public ResponseEntity<Transaction> deposit(@RequestBody Transaction transaction) {
-		ResponseEntity<Double> entity=restTemplate.getForEntity("http://localhost:9090/accounts/" + transaction.getAccountNumber() + "/balance",
-				Double.class);
+	@PostMapping("/deposit")
+	private ResponseEntity<Transaction> deposit(@RequestBody Transaction transaction) {
+		System.out.println("Transaction Service");
+		ResponseEntity<Double> entity = restTemplate.getForEntity(
+				"http://localhost:8989/accounts/" + transaction.getAccountNumber() + "/balance", Double.class);
+		System.out.println("hello");
 		Double currentBalance = entity.getBody();
-		Double updateBalance = service.deposit(transaction.getAccountNumber(),transaction.getTransactionDetails(), currentBalance,transaction.getAmount());
-		restTemplate.put("http://localhost:9090/accounts/"+transaction.getAccountNumber()+"?currentBalance="+updateBalance, null);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		transaction.getTransactionDate();
+		Double updatedBalance = service.deposit(transaction.getAccountNumber(), transaction.getAmount(),
+				transaction.getTransactionDetails(), LocalDateTime.now(), currentBalance,transaction.getTransactionType());
+		System.out.println("returnin the current balance" +updatedBalance);
+		restTemplate.put("http://localhost:8989/accounts/"+transaction.getAccountNumber()+"?currentBalance="+updatedBalance, null);
+		System.out.println("getting updated balance");
+		return new ResponseEntity<Transaction>(HttpStatus.CREATED);
+
+	}
+	
+	@PostMapping("/withdraw")
+	private ResponseEntity<Transaction> withdraw(@RequestBody Transaction transaction) {
+		System.out.println("Transaction Service");
+		ResponseEntity<Double> entity = restTemplate.getForEntity(
+				"http://localhost:8989/accounts/" + transaction.getAccountNumber() + "/balance", Double.class);
+		System.out.println("hello");
+		Double currentBalance = entity.getBody();
+		transaction.getTransactionDate();
+		Double updatedBalance = service.withdraw(transaction.getAccountNumber(), transaction.getAmount(),
+				transaction.getTransactionDetails(), LocalDateTime.now(), currentBalance,transaction.getTransactionType());
+		System.out.println("returnin the current balance" +updatedBalance);
+		restTemplate.put("http://localhost:8989/accounts/"+transaction.getAccountNumber()+"?currentBalance="+updatedBalance, null);
+		System.out.println("getting updated balance");
+		return new ResponseEntity<Transaction>(HttpStatus.CREATED);
 	}
 }
